@@ -8,7 +8,6 @@ BASE_PATH="/opt/backup-nextcloud"
 LOG_FILE="$BASE_PATH/backup-nextcloud.log"
 SYSTEMD_PATH="/etc/systemd/system"
 TIME_ZONE="Asia/Tokyo"
-TEMP_DIR="backup-nextcloud"
 
 # Ensure the backup drive is mounted
 if [ ! -d "$BACKUP_PATH" ]; then
@@ -28,13 +27,20 @@ if ! command -v curl &> /dev/null; then
     exit 1
 fi
 
-# Create temporary directory
-mkdir "$TEMP_DIR" && cd "$TEMP_DIR"
 
 # Download the backup-nextcloud.sh & systemd files
-curl -O https://raw.githubusercontent.com/happyeric77/nextcloud-auto-backup/main/backup-nextcloud.sh
-curl -O https://raw.githubusercontent.com/happyeric77/nextcloud-auto-backup/main/backup-nextcloud.service
-curl -O https://raw.githubusercontent.com/happyeric77/nextcloud-auto-backup/main/backup-nextcloud.timer
+# Check if files exist, if now download them
+if [ ! -f backup-nextcloud.sh ]; then
+    curl -O https://raw.githubusercontent.com/happyeric77/nextcloud-auto-backup/main/backup-nextcloud.sh
+fi
+
+if [ ! -f backup-nextcloud.service ]; then
+    curl -O https://raw.githubusercontent.com/happyeric77/nextcloud-auto-backup/main/backup-nextcloud.service
+fi
+
+if [ ! -f backup-nextcloud.timer ]; then
+    curl -O https://raw.githubusercontent.com/happyeric77/nextcloud-auto-backup/main/backup-nextcloud.timer
+fi
 
 # Check if files exist
 for file in backup-nextcloud.sh backup-nextcloud.service backup-nextcloud.timer; do
@@ -71,7 +77,3 @@ systemctl enable backup-nextcloud.timer
 systemctl start backup-nextcloud.timer
 
 echo "[$(TZ=$TIME_ZONE date)]: **backup-nextcloud process installed**"
-
-# Clean up temporary directory
-cd ..
-rm -rf "$TEMP_DIR"

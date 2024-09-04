@@ -48,11 +48,14 @@ The systemd timer is configured to run the backup script every Tuesday at 5:30 A
 
 - **Change the backup schedule**:
 
-  edule by editing the `OnCalendar` directive.
+  edule by editing the `OnCalendar` directive in `/etc/systemd/system/backup-nextcloud.timer`. The default schedule is set to run every Tuesday at 5:30 AM.
 
 - **Change the backup drive mount point**:
 
-  You can change the backup drive mount point by editing the `BACKUP_PATH` variable in both `backup-nextcloud.sh` and `install.sh`.
+  To customize the backup drive mount point, you will need to 
+  1. Clone the repository `git clone https://github.com/happyeric77/nextcloud-auto-backup.git`
+  2. Edit the `BACKUP_PATH` variable in both `backup-nextcloud.sh` and `install.sh`.
+  3. Run the install script `sudo bash install.sh`.
 
 
 ## Logs
