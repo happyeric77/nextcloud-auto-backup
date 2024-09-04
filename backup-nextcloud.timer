@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup nextcloud timmer
+
+[Timer]
+OnCalendar=Tue *-*-* 5:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

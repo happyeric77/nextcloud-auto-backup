@@ -1,0 +1,10 @@
+[Unit]
+Description=Backup nextcloud snap service
+After=snapd.service
+Requires=snapd.service
+
+[Service]
+ExecStart=/bin/bash /opt/backup-nextcloud/backup-nextcloud.sh
+
+[Install]
+WantedBy=multi-user.target
